@@ -46,10 +46,20 @@ ADC_HandleTypeDef hadc2;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint16_t value;
-uint16_t value_2;
-float temp;
-float temp2;
+
+float temp_1;
+float temp_2;
+float temp_3;
+float temp_4;
+float temp_5;
+float temp_6;
+float temp_7;
+float temp_8;
+float temp_9;
+float temp_10;
+float temp_11;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,14 +69,7 @@ static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC2_Init(void);
 /* USER CODE BEGIN PFP */
-__weak void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
-{
-	value = HAL_ADC_GetValue(&hadc1);
-	value_2 = HAL_ADC_GetValue(&hadc2);
-	temp = value * 0.08;
-	temp2 = value_2 * 0.08;
-	//printf("Temperature = %.2f°C\n\r", temp);
-}
+
 #define PRINTF2UART2 int __io_putchar(int ch)
 /* USER CODE END PFP */
 
@@ -83,7 +86,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	uint16_t ADC1_VAL[4];
+	uint16_t ADC2_VAL[7];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -108,21 +112,95 @@ int main(void)
   MX_USART2_UART_Init();
   MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_ADC_Start(&hadc1);
   HAL_ADC_Start_IT(&hadc1);
   HAL_ADC_Start_IT(&hadc2);
+  //HAL_ADC_Start_IT(&hadc3);
+  //HAL_ADC_Start_IT(&hadc4);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	 // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+	  HAL_UART_Transmit(&huart2, (uint8_t *)"Hello UART\r\n", 12, HAL_MAX_DELAY);
+	  HAL_Delay(1000);  // 1-second delay
+
+	  printf("HEllo\r\n");
+	  HAL_ADC_Start_IT(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  ADC1_VAL[0] = HAL_ADC_GetValue(&hadc1);
+	  temp_1 = ADC1_VAL[0] * 0.08;
+	  printf("Temperature 1 = %.2f°C\n\r", temp_1);
+
+	  HAL_ADC_Start_IT(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  ADC1_VAL[1] = HAL_ADC_GetValue(&hadc1);
+	  temp_2 = ADC1_VAL[1] * 0.08;
+	  printf("Temperature 2 = %.2f°C\n\r", temp_2);
+
+	  HAL_ADC_Start_IT(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  ADC1_VAL[2] = HAL_ADC_GetValue(&hadc1);
+	  temp_3 = ADC1_VAL[2] * 0.08;
+	  printf("Temperature 3 = %.2f°C\n\r", temp_3);
+
+	  HAL_ADC_Start_IT(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  ADC1_VAL[3] = HAL_ADC_GetValue(&hadc1);
+	  temp_4 = ADC1_VAL[3] * 0.08;
+	  printf("Temperature 4 = %.2f°C\n\r", temp_4);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[0] = HAL_ADC_GetValue(&hadc2);
+	  temp_5 = ADC2_VAL[0] * 0.08;
+	  printf("Temperature 5 = %.2f°C\n\r", temp_5);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[1] = HAL_ADC_GetValue(&hadc2);
+	  temp_6 = ADC2_VAL[1] * 0.08;
+	  printf("Temperature 6 = %.2f°C\n\r", temp_6);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[2] = HAL_ADC_GetValue(&hadc2);
+	  temp_7 = ADC2_VAL[2] * 0.08;
+	  printf("Temperature 7 = %.2f°C\n\r", temp_7);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[3] = HAL_ADC_GetValue(&hadc2);
+	  temp_8 = ADC2_VAL[3] * 0.08;
+	  printf("Temperature 8 = %.2f°C\n\r", temp_8);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[4] = HAL_ADC_GetValue(&hadc2);
+	  temp_9 = ADC2_VAL[4] * 0.08;
+	  printf("Temperature 9 = %.2f°C\n\r", temp_9);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[5] = HAL_ADC_GetValue(&hadc2);
+	  temp_10 = ADC2_VAL[5] * 0.08;
+	  printf("Temperature 10 = %.2f°C\n\r", temp_10);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[6] = HAL_ADC_GetValue(&hadc2);
+	  temp_11 = ADC2_VAL[6] * 0.08;
+	  printf("Temperature 11 = %.2f°C\n\r", temp_11);
+
+
     /* USER CODE END WHILE */
-	  HAL_ADC_ConvCpltCallback(&hadc1);
-	  printf("Temperature 1 = %.2f°C\n\r", temp);
-	  printf("Temperature 2 = %.2f°C\n\r", temp2);
+
     /* USER CODE BEGIN 3 */
-	  HAL_Delay(100);
+
 
   }
   /* USER CODE END 3 */
@@ -188,6 +266,7 @@ static void MX_ADC1_Init(void)
 
   ADC_MultiModeTypeDef multimode = {0};
   ADC_ChannelConfTypeDef sConfig = {0};
+  ADC_InjectionConfTypeDef sConfigInjected = {0};
 
   /* USER CODE BEGIN ADC1_Init 1 */
 
@@ -198,17 +277,18 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.DiscontinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 3;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
-  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+  hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -231,6 +311,52 @@ static void MX_ADC1_Init(void)
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_8;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Injected Channel
+  */
+  sConfigInjected.InjectedChannel = ADC_CHANNEL_1;
+  sConfigInjected.InjectedRank = ADC_INJECTED_RANK_1;
+  sConfigInjected.InjectedSingleDiff = ADC_SINGLE_ENDED;
+  sConfigInjected.InjectedNbrOfConversion = 1;
+  sConfigInjected.InjectedSamplingTime = ADC_SAMPLETIME_601CYCLES_5;
+  sConfigInjected.ExternalTrigInjecConvEdge = ADC_EXTERNALTRIGINJECCONV_EDGE_RISING;
+  sConfigInjected.ExternalTrigInjecConv = ADC_INJECTED_SOFTWARE_START;
+  sConfigInjected.AutoInjectedConv = DISABLE;
+  sConfigInjected.InjectedDiscontinuousConvMode = DISABLE;
+  sConfigInjected.QueueInjectedContext = DISABLE;
+  sConfigInjected.InjectedOffset = 0;
+  sConfigInjected.InjectedOffsetNumber = ADC_OFFSET_NONE;
+  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
   {
     Error_Handler();
   }
@@ -263,17 +389,18 @@ static void MX_ADC2_Init(void)
   hadc2.Instance = ADC2;
   hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc2.Init.ContinuousConvMode = ENABLE;
-  hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc2.Init.ContinuousConvMode = DISABLE;
+  hadc2.Init.DiscontinuousConvMode = ENABLE;
+  hadc2.Init.NbrOfDiscConversion = 1;
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.NbrOfConversion = 7;
   hadc2.Init.DMAContinuousRequests = DISABLE;
   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
-  hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+  hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   if (HAL_ADC_Init(&hadc2) != HAL_OK)
   {
     Error_Handler();
@@ -281,12 +408,66 @@ static void MX_ADC2_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_2;
+  sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_9;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Rank = ADC_REGULAR_RANK_7;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -339,12 +520,25 @@ static void MX_USART2_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PA5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
