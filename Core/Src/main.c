@@ -42,6 +42,8 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
+ADC_HandleTypeDef hadc3;
+ADC_HandleTypeDef hadc4;
 
 UART_HandleTypeDef huart2;
 
@@ -58,6 +60,19 @@ float temp_8;
 float temp_9;
 float temp_10;
 float temp_11;
+float temp_12;
+float temp_13;
+float temp_14;
+float temp_15;
+float temp_16;
+float temp_17;
+float temp_18;
+float temp_19;
+float temp_20;
+float humidity;
+float tension;
+
+float mean;
 
 
 /* USER CODE END PV */
@@ -68,6 +83,8 @@ static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC2_Init(void);
+static void MX_ADC3_Init(void);
+static void MX_ADC4_Init(void);
 /* USER CODE BEGIN PFP */
 
 #define PRINTF2UART2 int __io_putchar(int ch)
@@ -88,6 +105,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t ADC1_VAL[4];
 	uint16_t ADC2_VAL[7];
+	uint16_t ADC3_VAL[2];
+	uint16_t ADC4_VAL[2];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -111,11 +130,13 @@ int main(void)
   MX_ADC1_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
+  MX_ADC3_Init();
+  MX_ADC4_Init();
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_IT(&hadc1);
   HAL_ADC_Start_IT(&hadc2);
-  //HAL_ADC_Start_IT(&hadc3);
-  //HAL_ADC_Start_IT(&hadc4);
+  HAL_ADC_Start_IT(&hadc3);
+  HAL_ADC_Start_IT(&hadc4);
 
 
   /* USER CODE END 2 */
@@ -128,7 +149,9 @@ int main(void)
 	 // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
 	  HAL_UART_Transmit(&huart2, (uint8_t *)"Hello UART\r\n", 12, HAL_MAX_DELAY);
 	  HAL_Delay(1000);  // 1-second delay
+	  //*******************  ADC 1 ******************************************
 
+      // Delete temp 1
 	  printf("HEllo\r\n");
 	  HAL_ADC_Start_IT(&hadc1);
 	  HAL_ADC_PollForConversion(&hadc1, 100);
@@ -154,48 +177,107 @@ int main(void)
 	  temp_4 = ADC1_VAL[3] * 0.08;
 	  printf("Temperature 4 = %.2f°C\n\r", temp_4);
 
+	  HAL_ADC_Start_IT(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, 100);
+	  ADC1_VAL[4] = HAL_ADC_GetValue(&hadc1);
+	  temp_5 = ADC1_VAL[4] * 0.08;
+	  printf("Temperature 5 = %.2f°C\n\r", temp_5);
+
+	  //*******************  ADC 2 ******************************************
 	  HAL_ADC_Start_IT(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, 100);
 	  ADC2_VAL[0] = HAL_ADC_GetValue(&hadc2);
-	  temp_5 = ADC2_VAL[0] * 0.08;
-	  printf("Temperature 5 = %.2f°C\n\r", temp_5);
-
-	  HAL_ADC_Start_IT(&hadc2);
-	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[1] = HAL_ADC_GetValue(&hadc2);
-	  temp_6 = ADC2_VAL[1] * 0.08;
-	  printf("Temperature 6 = %.2f°C\n\r", temp_6);
-
-	  HAL_ADC_Start_IT(&hadc2);
-	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[2] = HAL_ADC_GetValue(&hadc2);
-	  temp_7 = ADC2_VAL[2] * 0.08;
-	  printf("Temperature 7 = %.2f°C\n\r", temp_7);
-
-	  HAL_ADC_Start_IT(&hadc2);
-	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[3] = HAL_ADC_GetValue(&hadc2);
-	  temp_8 = ADC2_VAL[3] * 0.08;
+	  temp_8 = ADC2_VAL[0] * 0.08;
 	  printf("Temperature 8 = %.2f°C\n\r", temp_8);
 
 	  HAL_ADC_Start_IT(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[4] = HAL_ADC_GetValue(&hadc2);
-	  temp_9 = ADC2_VAL[4] * 0.08;
+	  ADC2_VAL[1] = HAL_ADC_GetValue(&hadc2);
+	  temp_9 = ADC2_VAL[1] * 0.08;
 	  printf("Temperature 9 = %.2f°C\n\r", temp_9);
 
 	  HAL_ADC_Start_IT(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[5] = HAL_ADC_GetValue(&hadc2);
-	  temp_10 = ADC2_VAL[5] * 0.08;
+	  ADC2_VAL[2] = HAL_ADC_GetValue(&hadc2);
+	  temp_10 = ADC2_VAL[2] * 0.08;
 	  printf("Temperature 10 = %.2f°C\n\r", temp_10);
 
 	  HAL_ADC_Start_IT(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, 100);
-	  ADC2_VAL[6] = HAL_ADC_GetValue(&hadc2);
-	  temp_11 = ADC2_VAL[6] * 0.08;
+	  ADC2_VAL[3] = HAL_ADC_GetValue(&hadc2);
+	  temp_11 = ADC2_VAL[3] * 0.08;
 	  printf("Temperature 11 = %.2f°C\n\r", temp_11);
 
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[4] = HAL_ADC_GetValue(&hadc2);
+	  temp_12 = ADC2_VAL[4] * 0.08;
+	  printf("Temperature 12 = %.2f°C\n\r", temp_12);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[5] = HAL_ADC_GetValue(&hadc2);
+	  temp_13 = ADC2_VAL[5] * 0.08;
+	  printf("Temperature 13 = %.2f°C\n\r", temp_13);
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[6] = HAL_ADC_GetValue(&hadc2);
+	  tension = ADC2_VAL[6] * (3.3/4096);
+	  humidity = (-1)*(tension - 0.830)/0.030;
+	  printf("Humidity = %.2f°C\n\r", humidity);
+
+
+	  HAL_ADC_Start_IT(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, 100);
+	  ADC2_VAL[7] = HAL_ADC_GetValue(&hadc2);
+	  temp_14 = ADC2_VAL[7] * 0.08;
+	  printf("Temperature 14 = %.2f°C\n\r", temp_14);
+
+
+
+	  //*******************  ADC 3 ******************************************
+	  HAL_ADC_Start_IT(&hadc3);
+	  HAL_ADC_PollForConversion(&hadc3, 100);
+	  ADC3_VAL[0] = HAL_ADC_GetValue(&hadc3);
+	  temp_15 = ADC3_VAL[0] * 0.08;
+	  printf("Temperature 15 = %.2f°C\n\r", temp_15);
+
+	  HAL_ADC_Start_IT(&hadc3);
+	  HAL_ADC_PollForConversion(&hadc3, 100);
+	  ADC3_VAL[1] = HAL_ADC_GetValue(&hadc3);
+	  temp_16 = ADC3_VAL[1] * 0.08;
+	  printf("Temperature 16 = %.2f°C\n\r", temp_16);
+
+	  HAL_ADC_Start_IT(&hadc3);
+	  HAL_ADC_PollForConversion(&hadc3, 100);
+	  ADC3_VAL[2] = HAL_ADC_GetValue(&hadc3);
+	  temp_17 = ADC3_VAL[2] * 0.08;
+	  printf("Temperature 17 = %.2f°C\n\r", temp_17);
+
+
+
+	  //*******************  ADC 4 ******************************************
+	  HAL_ADC_Start_IT(&hadc4);
+	  HAL_ADC_PollForConversion(&hadc4, 100);
+	  ADC4_VAL[0] = HAL_ADC_GetValue(&hadc4);
+	  temp_18 = ADC4_VAL[0] * 0.08;
+	  printf("Temperature 18 = %.2f°C\n\r", temp_18);
+
+	  HAL_ADC_Start_IT(&hadc4);
+	  HAL_ADC_PollForConversion(&hadc4, 100);
+	  ADC4_VAL[1] = HAL_ADC_GetValue(&hadc4);
+	  temp_19 = ADC4_VAL[1] * 0.08;
+	  printf("Temperature 19 = %.2f°C\n\r", temp_19);
+
+	  HAL_ADC_Start_IT(&hadc4);
+	  HAL_ADC_PollForConversion(&hadc4, 100);
+	  ADC4_VAL[2] = HAL_ADC_GetValue(&hadc4);
+	  temp_20 = ADC4_VAL[2] * 0.08;
+	  printf("Temperature 20 = %.2f°C\n\r", temp_20);
+
+
+	  mean = (temp_2+temp_3+temp_4+temp_5+temp_8+temp_9+temp_10+temp_11+temp_12+temp_13+temp_14+temp_15+temp_16+temp_17+temp_18+temp_19+temp_20)/17.0;
 
     /* USER CODE END WHILE */
 
@@ -244,8 +326,11 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_ADC12
+                              |RCC_PERIPHCLK_ADC34;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV1;
+  PeriphClkInit.Adc34ClockSelection = RCC_ADC34PLLCLK_DIV1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -266,7 +351,6 @@ static void MX_ADC1_Init(void)
 
   ADC_MultiModeTypeDef multimode = {0};
   ADC_ChannelConfTypeDef sConfig = {0};
-  ADC_InjectionConfTypeDef sConfigInjected = {0};
 
   /* USER CODE BEGIN ADC1_Init 1 */
 
@@ -275,7 +359,7 @@ static void MX_ADC1_Init(void)
   /** Common config
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
@@ -284,7 +368,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 3;
+  hadc1.Init.NbrOfConversion = 5;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
@@ -317,7 +401,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -326,7 +410,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -335,28 +419,18 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_8;
-  sConfig.Rank = ADC_REGULAR_RANK_5;
+  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
 
-  /** Configure Injected Channel
+  /** Configure Regular Channel
   */
-  sConfigInjected.InjectedChannel = ADC_CHANNEL_1;
-  sConfigInjected.InjectedRank = ADC_INJECTED_RANK_1;
-  sConfigInjected.InjectedSingleDiff = ADC_SINGLE_ENDED;
-  sConfigInjected.InjectedNbrOfConversion = 1;
-  sConfigInjected.InjectedSamplingTime = ADC_SAMPLETIME_601CYCLES_5;
-  sConfigInjected.ExternalTrigInjecConvEdge = ADC_EXTERNALTRIGINJECCONV_EDGE_RISING;
-  sConfigInjected.ExternalTrigInjecConv = ADC_INJECTED_SOFTWARE_START;
-  sConfigInjected.AutoInjectedConv = DISABLE;
-  sConfigInjected.InjectedDiscontinuousConvMode = DISABLE;
-  sConfigInjected.QueueInjectedContext = DISABLE;
-  sConfigInjected.InjectedOffset = 0;
-  sConfigInjected.InjectedOffsetNumber = ADC_OFFSET_NONE;
-  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
+  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
@@ -387,7 +461,7 @@ static void MX_ADC2_Init(void)
   /** Common config
   */
   hadc2.Instance = ADC2;
-  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
   hadc2.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc2.Init.ContinuousConvMode = DISABLE;
@@ -396,7 +470,7 @@ static void MX_ADC2_Init(void)
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc2.Init.NbrOfConversion = 7;
+  hadc2.Init.NbrOfConversion = 8;
   hadc2.Init.DMAContinuousRequests = DISABLE;
   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
@@ -439,7 +513,7 @@ static void MX_ADC2_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_9;
+  sConfig.Channel = ADC_CHANNEL_8;
   sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
@@ -448,7 +522,7 @@ static void MX_ADC2_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = ADC_REGULAR_RANK_5;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
@@ -457,7 +531,7 @@ static void MX_ADC2_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = ADC_REGULAR_RANK_6;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
@@ -466,8 +540,17 @@ static void MX_ADC2_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Channel = ADC_CHANNEL_12;
   sConfig.Rank = ADC_REGULAR_RANK_7;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_8;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -475,6 +558,167 @@ static void MX_ADC2_Init(void)
   /* USER CODE BEGIN ADC2_Init 2 */
 
   /* USER CODE END ADC2_Init 2 */
+
+}
+
+/**
+  * @brief ADC3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC3_Init(void)
+{
+
+  /* USER CODE BEGIN ADC3_Init 0 */
+
+  /* USER CODE END ADC3_Init 0 */
+
+  ADC_MultiModeTypeDef multimode = {0};
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC3_Init 1 */
+
+  /* USER CODE END ADC3_Init 1 */
+
+  /** Common config
+  */
+  hadc3.Instance = ADC3;
+  hadc3.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc3.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc3.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc3.Init.ContinuousConvMode = DISABLE;
+  hadc3.Init.DiscontinuousConvMode = ENABLE;
+  hadc3.Init.NbrOfDiscConversion = 1;
+  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc3.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc3.Init.NbrOfConversion = 3;
+  hadc3.Init.DMAContinuousRequests = DISABLE;
+  hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc3.Init.LowPowerAutoWait = DISABLE;
+  hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  if (HAL_ADC_Init(&hadc3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure the ADC multi-mode
+  */
+  multimode.Mode = ADC_MODE_INDEPENDENT;
+  if (HAL_ADCEx_MultiModeConfigChannel(&hadc3, &multimode) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+  sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC3_Init 2 */
+
+  /* USER CODE END ADC3_Init 2 */
+
+}
+
+/**
+  * @brief ADC4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC4_Init(void)
+{
+
+  /* USER CODE BEGIN ADC4_Init 0 */
+
+  /* USER CODE END ADC4_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC4_Init 1 */
+
+  /* USER CODE END ADC4_Init 1 */
+
+  /** Common config
+  */
+  hadc4.Instance = ADC4;
+  hadc4.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc4.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc4.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc4.Init.ContinuousConvMode = DISABLE;
+  hadc4.Init.DiscontinuousConvMode = ENABLE;
+  hadc4.Init.NbrOfDiscConversion = 1;
+  hadc4.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc4.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc4.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc4.Init.NbrOfConversion = 3;
+  hadc4.Init.DMAContinuousRequests = DISABLE;
+  hadc4.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc4.Init.LowPowerAutoWait = DISABLE;
+  hadc4.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  if (HAL_ADC_Init(&hadc4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+  sConfig.SamplingTime = ADC_SAMPLETIME_601CYCLES_5;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc4, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc4, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc4, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC4_Init 2 */
+
+  /* USER CODE END ADC4_Init 2 */
 
 }
 
