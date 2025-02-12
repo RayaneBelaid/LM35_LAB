@@ -150,12 +150,10 @@ int main(void)
   while (1)
   {
 
-	 // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"Hello UART\r\n", 12, HAL_MAX_DELAY);
+	  HAL_UART_Transmit(&huart2, (uint8_t *)"START >> \r\n", 12, HAL_MAX_DELAY);
 	  HAL_Delay(1000);  // 1-second delay
 	  //*******************  ADC 1 ******************************************
-      // Delete temp 1
-	  printf("HEllo\r\n");
+
 	  HAL_ADC_Start_IT(&hadc1);
 	  HAL_ADC_PollForConversion(&hadc1, 100);
 	  ADC1_VAL[0] = HAL_ADC_GetValue(&hadc1);
@@ -222,15 +220,13 @@ int main(void)
 	  ADC2_VAL[5] = HAL_ADC_GetValue(&hadc2);
 	  temp_13 = ADC2_VAL[5] * 0.08;
 	  printf("Temperature 13 = %.2f°C\n\r", temp_13);
-/*
+
 	  HAL_ADC_Start_IT(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, 100);
 	  ADC2_VAL[6] = HAL_ADC_GetValue(&hadc2);
 	  tension = ADC2_VAL[6] * (3.3/4096);
 	  humidity = (-1)*(tension - 0.830)/0.030;
 	  printf("Humidity = %.2f°C\n\r", humidity);
-	  */
-
 
 
 	  HAL_ADC_Start_IT(&hadc2);
@@ -244,7 +240,6 @@ int main(void)
 	  ADC2_VAL[6]  = HAL_ADC_GetValue(&hadc2);
 	  temp_RAYA = ADC2_VAL[6]  * 0.08;
 	  printf("Temperature 13 = %.2f°C\n\r", temp_RAYA);
-
 
 
 	  //*******************  ADC 3 ******************************************
@@ -287,7 +282,7 @@ int main(void)
 	  temp_20 = ADC4_VAL[2] * 0.08;
 	  printf("Temperature 20 = %.2f°C\n\r", temp_20);
 
-
+	  //*******************  Calculating the mean ******************************************
 	  mean = (temp_2+temp_3+temp_4+temp_5+temp_9+temp_12+temp_13+temp_16+temp_17+temp_19+temp_20+temp_RAYA)/12.0;
 
 	  mean_1 = (temp_2+temp_3+temp_4+temp_5+temp_17)/4.0;
