@@ -13,8 +13,9 @@
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
-  * The ADC interfaces are connected to pins in the stm32 board using different wires colors as :
-  * follow:
+  * The ADC interfaces are connected to pins on the STM32 board using different
+  * wire colors as follows:
+  *
   * ADC 1 ==> Red (5 wires)
   * ADC 2 ==> White (8 wires)
   * ADC 3 ==> Yellow (3 wires)
