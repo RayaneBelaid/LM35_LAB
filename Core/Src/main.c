@@ -13,6 +13,13 @@
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
+  * The ADC interfaces are connected to pins in the stm32 board using different wires colors as :
+  * follow:
+  * ADC 1 ==> Red (5 wires)
+  * ADC 2 ==> White (8 wires)
+  * ADC 3 ==> Yellow (3 wires)
+  * ADC 4 ==> Green (3 wires)
+  *
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -150,10 +157,10 @@ int main(void)
   while (1)
   {
 
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"START >> \r\n", 12, HAL_MAX_DELAY);
+	  HAL_UART_Transmit(&huart2, (uint8_t *)"START Reading Temperature data >> \r\n", 12, HAL_MAX_DELAY);
 	  HAL_Delay(1000);  // 1-second delay
-	  //*******************  ADC 1 ******************************************
 
+	  //*******************  ADC 1 ******************************************
 	  HAL_ADC_Start_IT(&hadc1);
 	  HAL_ADC_PollForConversion(&hadc1, 100);
 	  ADC1_VAL[0] = HAL_ADC_GetValue(&hadc1);
